@@ -1,0 +1,42 @@
+{
+  "color": {
+    "brand": {
+      "primary": { "value": "#8B1A1A", "type": "color", "description": "Мордовский глубокий красный" },
+      "primary-dark": { "value": "#5A1010", "type": "color", "description": "Темный обод розетки" },
+      "primary-light": { "value": "#B83232", "type": "color", "description": "Акцентный красный" },
+      "amber": { "value": "#E8A33D", "type": "color", "description": "Мордовский теплый янтарь" },
+      "amber-light": { "value": "#F3C073", "type": "color", "description": "Светлый янтарь" },
+      "cream": { "value": "#F5EFE0", "type": "color", "description": "Кремовое ядро" },
+      "cream-surface": { "value": "#FAF7F2", "type": "color", "description": "Нейтральный светлый фон" }
+    },
+    "status": {
+      "success": { "value": "#16A34A", "type": "color" },
+      "warning": { "value": "#D97706", "type": "color" },
+      "danger": { "value": "#DC2626", "type": "color" },
+      "info": { "value": "#2563EB", "type": "color" }
+    },
+    "surface": {
+      "bg": { "value": "#FAF7F2", "type": "color" },
+      "card": { "value": "#FFFFFF", "type": "color" },
+      "subtle": { "value": "#F3EFE6", "type": "color" },
+      "dark-bg": { "value": "#141110", "type": "color" },
+      "dark-card": { "value": "#1F1A18", "type": "color" }
+    }
+  },
+  "borderRadius": {
+    "sm": { "value": "8px", "type": "borderRadius" },
+    "md": { "value": "12px", "type": "borderRadius" },
+    "lg": { "value": "16px", "type": "borderRadius" },
+    "xl": { "value": "20px", "type": "borderRadius" },
+    "2xl": { "value": "24px", "type": "borderRadius" },
+    "full": { "value": "9999px", "type": "borderRadius" }
+  },
+  "boxShadow": {
+    "card": { "value": "0 2px 10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02)", "type": "boxShadow" },
+    "hover": { "value": "0 10px 25px -5px rgba(139, 26, 26, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)", "type": "boxShadow" },
+    "sheet": { "value": "0 -10px 30px rgba(0, 0, 0, 0.12)", "type": "boxShadow" }
+  },
+  "fontFamily": {
+    "sans": { "value": "Manrope, Onest, system-ui, -apple-system, sans-serif", "type": "fontFamilies" }
+  }
+}

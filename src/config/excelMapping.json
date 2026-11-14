@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "warehouse": 0,
+    "positionName": 1,
+    "quantity": 2,
+    "emptyD": 3,
+    "cost": 4,
+    "revenue": 5
+  },
+  "skipPatterns": [
+    "всего",
+    "итого",
+    "со склада",
+    "отчет по настойкам",
+    "название ресторана",
+    "период:"
+  ],
+  "restaurantAliases": {
+    "подворье - бар": "production-podvorie",
+    "подворье бар": "production-podvorie",
+    "капитал-инвест": "venue-samovar",
+    "самовар": "venue-samovar",
+    "мордовское подворье": "venue-podvorie",
+    "подворье": "venue-podvorie",
+    "ева": "venue-eva",
+    "eva": "venue-eva"
+  },
+  "defaultPortionSizeMl": 40,
+  "normalization": {
+    "stripWords": ["40 гр", "40 мл", "40гр", "40мл", "настойка", "сет", "п", "порция"],
+    "cleanRegex": "[^a-zA-Zа-яА-Я0-9\\s]"
+  }
+}

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-brand-primary: #8B1A1A;
+    --color-brand-amber: #E8A33D;
+    --color-surface-bg: #FAF7F2;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Manrope', 'Onest', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+}
+
+/* Скрытие полосы прокрутки для сегментных контролов и табов */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Безопасная зона для iPhone / PWA */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+}
