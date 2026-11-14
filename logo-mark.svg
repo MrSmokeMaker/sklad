@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FAF7F2" />
+      <stop offset="100%" stop-color="#F3EFE6" />
+    </radialGradient>
+  </defs>
+  <!-- Background circle for PWA icon -->
+  <circle cx="256" cy="256" r="248" fill="#FAF7F2" stroke="#E8A33D" stroke-width="4"/>
+  
+  <!-- Outer hoop -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#5A1010" stroke-width="5" stroke-dasharray="8 6"/>
+
+  <!-- 16 berry beads around the rim -->
+  <g id="berries">
+    <!-- 16 berries placed every 22.5 deg around radius 216 -->
+    <!-- 0 deg --> <circle cx="472" cy="256" r="8" fill="#8B1A1A"/><circle cx="472" cy="256" r="3.5" fill="#E8A33D"/>
+    <!-- 22.5 deg --> <circle cx="455.5" cy="338.6" r="8" fill="#8B1A1A"/><circle cx="455.5" cy="338.6" r="3.5" fill="#E8A33D"/>
+    <!-- 45 deg --> <circle cx="408.7" cy="408.7" r="8" fill="#8B1A1A"/><circle cx="408.7" cy="408.7" r="3.5" fill="#E8A33D"/>
+    <!-- 67.5 deg --> <circle cx="338.6" cy="455.5" r="8" fill="#8B1A1A"/><circle cx="338.6" cy="455.5" r="3.5" fill="#E8A33D"/>
+    <!-- 90 deg --> <circle cx="256" cy="472" r="8" fill="#8B1A1A"/><circle cx="256" cy="472" r="3.5" fill="#E8A33D"/>
+    <!-- 112.5 deg --> <circle cx="173.4" cy="455.5" r="8" fill="#8B1A1A"/><circle cx="173.4" cy="455.5" r="3.5" fill="#E8A33D"/>
+    <!-- 135 deg --> <circle cx="103.3" cy="408.7" r="8" fill="#8B1A1A"/><circle cx="103.3" cy="408.7" r="3.5" fill="#E8A33D"/>
+    <!-- 157.5 deg --> <circle cx="56.5" cy="338.6" r="8" fill="#8B1A1A"/><circle cx="56.5" cy="338.6" r="3.5" fill="#E8A33D"/>
+    <!-- 180 deg --> <circle cx="40" cy="256" r="8" fill="#8B1A1A"/><circle cx="40" cy="256" r="3.5" fill="#E8A33D"/>
+    <!-- 202.5 deg --> <circle cx="56.5" cy="173.4" r="8" fill="#8B1A1A"/><circle cx="56.5" cy="173.4" r="3.5" fill="#E8A33D"/>
+    <!-- 225 deg --> <circle cx="103.3" cy="103.3" r="8" fill="#8B1A1A"/><circle cx="103.3" cy="103.3" r="3.5" fill="#E8A33D"/>
+    <!-- 247.5 deg --> <circle cx="173.4" cy="56.5" r="8" fill="#8B1A1A"/><circle cx="173.4" cy="56.5" r="3.5" fill="#E8A33D"/>
+    <!-- 270 deg --> <circle cx="256" cy="40" r="8" fill="#8B1A1A"/><circle cx="256" cy="40" r="3.5" fill="#E8A33D"/>
+    <!-- 292.5 deg --> <circle cx="338.6" cy="56.5" r="8" fill="#8B1A1A"/><circle cx="338.6" cy="56.5" r="3.5" fill="#E8A33D"/>
+    <!-- 315 deg --> <circle cx="408.7" cy="103.3" r="8" fill="#8B1A1A"/><circle cx="408.7" cy="103.3" r="3.5" fill="#E8A33D"/>
+    <!-- 337.5 deg --> <circle cx="455.5" cy="173.4" r="8" fill="#8B1A1A"/><circle cx="455.5" cy="173.4" r="3.5" fill="#E8A33D"/>
+  </g>
+
+  <!-- Outer 8-pointed solar star (Red #8B1A1A) -->
+  <g transform="translate(256, 256)">
+    <!-- 8 points forming solar star -->
+    <path d="M 0,-185 L 36,-65 L 185,0 L 65,36 L 0,185 L -36,65 L -185,0 L -65,-36 Z" fill="#8B1A1A" stroke="#5A1010" stroke-width="4"/>
+    <path d="M -131,-131 L -25,-75 L 0,-185 L 25,-75 L 131,-131 L 75,-25 L 185,0 L 75,25 L 131,131 L 25,75 L 0,185 L -25,75 L -131,131 L -75,25 L -185,0 L -75,-25 Z" fill="#8B1A1A" opacity="0.95"/>
+
+    <!-- Inner 8-pointed solar star (Amber #E8A33D rotated 22.5 deg) -->
+    <g transform="rotate(22.5)">
+      <path d="M 0,-138 L 26,-48 L 138,0 L 48,26 L 0,138 L -26,48 L -138,0 L -48,-26 Z" fill="#E8A33D" stroke="#8B1A1A" stroke-width="2"/>
+      <path d="M -98,-98 L -18,-56 L 0,-138 L 18,-56 L 98,-98 L 56,-18 L 138,0 L 56,18 L 98,98 L 18,56 L 0,138 L -18,56 L -98,98 L -56,18 L -138,0 L -56,-18 Z" fill="#E8A33D" opacity="0.9"/>
+    </g>
+
+    <!-- Cream Core (#F5EFE0) -->
+    <circle cx="0" cy="0" r="46" fill="#F5EFE0" stroke="#E8A33D" stroke-width="5"/>
+    <circle cx="0" cy="0" r="30" fill="#FAF7F2"/>
+    <!-- Deep Red Center Dot -->
+    <circle cx="0" cy="0" r="14" fill="#8B1A1A"/>
+    <circle cx="0" cy="0" r="5" fill="#E8A33D"/>
+  </g>
+</svg>
