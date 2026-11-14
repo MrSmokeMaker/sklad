@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { LogoMark } from '../branding/LogoMark';
-import { Moon, Sun, Sparkles, Building2, Download, Upload, Database } from 'lucide-react';
+import { Moon, Sun, Sparkles, Building2, Download, Upload, Database, RotateCcw } from 'lucide-react';
 import { Venue, Profile } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { dataService } from '../../db/dataService';
@@ -56,6 +56,13 @@ export const Header: React.FC<HeaderProps> = ({
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleResetCatalog = () => {
+    if (window.confirm('Обновить базу данных и загрузить полный актуальный каталог из 26 авторских рецептур настоек?')) {
+      dataService.resetMockData();
+      window.location.reload();
+    }
   };
 
   return (
@@ -120,6 +127,14 @@ export const Header: React.FC<HeaderProps> = ({
                 onChange={handleRestoreBackup}
                 className="hidden"
               />
+            </button>
+
+            <button
+              onClick={handleResetCatalog}
+              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+              title="Обновить каталог и применить 26 авторских рецептов"
+            >
+              <RotateCcw size={15} />
             </button>
 
             <button

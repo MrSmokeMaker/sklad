@@ -2,9 +2,9 @@
 // Не требует серверов, облака или платных подписок
 
 const DB_NAME = 'sklad_mordovia_db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = 'app_state';
-const STATE_KEY = 'root_state';
+const STATE_KEY = 'root_state_v2';
 
 export class LocalDatabase {
   private dbPromise: Promise<IDBDatabase | null>;
@@ -48,7 +48,7 @@ export class LocalDatabase {
   public async saveState(data: any): Promise<void> {
     // 1. Быстрое сохранение в localStorage
     try {
-      localStorage.setItem('sklad_state_v1', JSON.stringify(data));
+      localStorage.setItem('sklad_state_v2', JSON.stringify(data));
     } catch {
       // Игнорируем переполнение localStorage при больших фото
     }
@@ -94,7 +94,7 @@ export class LocalDatabase {
 
     // Fallback: localStorage
     try {
-      const fromLS = localStorage.getItem('sklad_state_v1');
+      const fromLS = localStorage.getItem('sklad_state_v2');
       if (fromLS) {
         return JSON.parse(fromLS);
       }

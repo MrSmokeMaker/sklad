@@ -84,12 +84,31 @@ class DataService {
       const fromIDB = await localDB.loadState();
       if (fromIDB) {
         this.state = { ...this.state, ...fromIDB };
-        return;
+      } else {
+        const saved = localStorage.getItem('sklad_state_v2');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          this.state = { ...this.state, ...parsed };
+        }
       }
-      const saved = localStorage.getItem('sklad_state_v2');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        this.state = { ...this.state, ...parsed };
+
+      // Автоматическая миграция: если в сохраненном состоянии старые данные (< 26 рецептов),
+      // обновляем рецепты, витрину, алкогольные основы и ингредиенты
+      if (!this.state.recipes || this.state.recipes.length < 26) {
+        this.state.recipes = [...mock.INITIAL_RECIPES];
+        this.state.showcase = [...INITIAL_SHOWCASE_ITEMS];
+        this.state.infusions = [...mock.INITIAL_INFUSIONS];
+        this.state.venues = [...mock.INITIAL_VENUES];
+
+        for (const item of mock.INITIAL_INVENTORY) {
+          const exists = this.state.inventory.some(
+            i => i.venue_id === item.venue_id && i.name.toLowerCase() === item.name.toLowerCase()
+          );
+          if (!exists) {
+            this.state.inventory.push(item);
+          }
+        }
+        this.saveToStorage();
       }
     } catch {
       // Игнорируем
