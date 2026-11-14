@@ -59,63 +59,63 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="relative overflow-hidden bg-gradient-to-r from-brand-primary-dark via-brand-primary to-brand-amber text-white shadow-md">
+    <header className="relative overflow-hidden bg-gradient-to-r from-brand-primary-dark via-brand-primary to-brand-amber text-white shadow-md pt-safe">
       {/* Мягкий декоративный радиальный свет */}
       <div className="absolute -top-12 -right-12 w-48 h-48 bg-brand-amber/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex flex-col gap-2.5">
-        <div className="flex items-center justify-between">
+      <div className="max-w-4xl mx-auto px-3.5 sm:px-4 py-2.5 sm:py-3.5 flex flex-col gap-2 sm:gap-2.5">
+        <div className="flex items-center justify-between gap-2">
           {/* Логотип + заголовок сети */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
             <LogoMark
               mode="ambient"
-              size={40}
+              size={36}
               onTap={() => navigate('/assistant')}
-              className="cursor-pointer"
+              className="cursor-pointer shrink-0"
             />
-            <div>
-              <div className="flex items-center gap-1.5">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">
                   Настойки
                 </h1>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-brand-amber text-brand-primary-dark uppercase">
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-brand-amber text-brand-primary-dark uppercase shrink-0">
                   {currentProfile.role}
                 </span>
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-200 border border-emerald-400/30">
+                <span className="hidden xs:inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-200 border border-emerald-400/30 shrink-0">
                   Local DB
                 </span>
               </div>
-              <p className="text-xs text-amber-100/90 font-medium">
+              <p className="text-[11px] sm:text-xs text-amber-100/90 font-medium truncate">
                 Мордовское подворье
               </p>
             </div>
           </div>
 
           {/* Правая панель кнопок */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {/* Статус локальной БД */}
             <div
-              className="px-2 py-1.5 rounded-xl bg-white/10 text-emerald-200 text-xs font-semibold backdrop-blur-sm flex items-center gap-1"
+              className="p-1.5 sm:px-2 sm:py-1.5 rounded-xl bg-white/10 text-emerald-200 text-xs font-semibold backdrop-blur-sm flex items-center gap-1"
               title="Локальная база данных (IndexedDB + localStorage)"
             >
-              <Database size={15} className="text-emerald-300" />
-              <span className="hidden sm:inline">Локальная БД</span>
+              <Database size={15} className="text-emerald-300 shrink-0" />
+              <span className="hidden md:inline">Локальная БД</span>
             </div>
 
             <button
               onClick={handleDownloadBackup}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
               title="Скачать резервную копию базы (JSON)"
             >
-              <Download size={16} />
+              <Download size={15} />
             </button>
 
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
               title="Восстановить базу из файла JSON"
             >
-              <Upload size={16} />
+              <Upload size={15} />
               <input
                 ref={fileInputRef}
                 type="file"
@@ -127,28 +127,28 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => navigate('/assistant')}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 transition-colors backdrop-blur-sm flex items-center gap-1 text-xs font-semibold"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 transition-colors backdrop-blur-sm flex items-center gap-1 text-xs font-semibold"
               title="AI Бар-помощник"
             >
-              <Sparkles size={16} className="text-brand-amber animate-pulse" />
+              <Sparkles size={15} className="text-brand-amber animate-pulse" />
               <span className="hidden sm:inline">Ассистент</span>
             </button>
 
             <button
               onClick={onToggleDarkMode}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
               title={darkMode ? 'Светлая тема' : 'Тёмная тема'}
             >
-              {darkMode ? <Sun size={17} className="text-amber-300" /> : <Moon size={17} />}
+              {darkMode ? <Sun size={15} className="text-amber-300" /> : <Moon size={15} />}
             </button>
           </div>
         </div>
 
         {/* Селектор заведения */}
         <div className="flex items-center gap-2 pt-1 border-t border-white/10">
-          <Building2 size={15} className="text-amber-200 shrink-0" />
+          <Building2 size={14} className="text-amber-200 shrink-0" />
           {isOwner ? (
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 w-full">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-0.5 w-full touch-pan-x pr-2">
               {venues.map((v) => {
                 const isActive = v.id === activeVenueId;
                 return (
@@ -168,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
               })}
             </div>
           ) : (
-            <span className="text-xs font-semibold text-white">
+            <span className="text-xs font-semibold text-white truncate">
               Заведение: {venues.find(v => v.id === activeVenueId)?.name || 'Не указано'}
             </span>
           )}

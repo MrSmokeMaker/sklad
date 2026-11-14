@@ -236,35 +236,37 @@ export const StatisticsPage: React.FC<StatisticsPageProps> = ({ venues, currentP
       </div>
 
       {/* Панель фильтров формирования отчета */}
-      <div className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Filter size={15} className="text-brand-primary" />
-          <span className="text-xs font-bold text-stone-700 dark:text-stone-300">
-            Параметры отчёта:
-          </span>
+      <div className="p-3.5 sm:p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-stone-700 dark:text-stone-300 shrink-0">
+            <Filter size={15} className="text-brand-primary" />
+            <span>Параметры отчёта:</span>
+          </div>
 
-          <select
-            value={selectedPeriod}
-            onChange={e => setSelectedPeriod(e.target.value)}
-            className="text-xs font-semibold px-2.5 py-1.5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg focus:outline-none"
-          >
-            <option value="2026-11-01">Ноябрь 2026</option>
-            <option value="2026-10-01">Октябрь 2026</option>
-          </select>
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 w-full sm:w-auto">
+            <select
+              value={selectedPeriod}
+              onChange={e => setSelectedPeriod(e.target.value)}
+              className="text-xs font-semibold px-2.5 py-1.5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg focus:outline-none w-full sm:w-auto"
+            >
+              <option value="2026-11-01">Ноябрь 2026</option>
+              <option value="2026-10-01">Октябрь 2026</option>
+            </select>
 
-          <select
-            value={selectedVenue}
-            onChange={e => setSelectedVenue(e.target.value)}
-            className="text-xs font-semibold px-2.5 py-1.5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg focus:outline-none"
-          >
-            <option value="all">Все заведения сети</option>
-            {venues.map(v => (
-              <option key={v.id} value={v.id}>{v.name}</option>
-            ))}
-          </select>
+            <select
+              value={selectedVenue}
+              onChange={e => setSelectedVenue(e.target.value)}
+              className="text-xs font-semibold px-2.5 py-1.5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg focus:outline-none w-full sm:w-auto max-w-full truncate"
+            >
+              <option value="all">Все заведения сети</option>
+              {venues.map(v => (
+                <option key={v.id} value={v.id}>{v.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
           <button
             onClick={handleExportExcel}
             className="flex items-center gap-1 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 rounded-lg text-xs font-bold transition-colors"
@@ -283,39 +285,39 @@ export const StatisticsPage: React.FC<StatisticsPageProps> = ({ venues, currentP
       </div>
 
       {/* Ключевые метрики (Сводная карточка) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+        <div className="p-3 sm:p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
           <div className="text-[11px] font-bold uppercase text-stone-500">Выручка сети</div>
-          <div className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1">
+          <div className="text-base sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1 truncate">
             {totalRevenue.toLocaleString('ru-RU')} ₽
           </div>
-          <div className="text-[10px] text-stone-400 mt-0.5">по данным бухгалтерии</div>
+          <div className="text-[10px] text-stone-400 mt-0.5 truncate">по данным бухгалтерии</div>
         </div>
 
-        <div className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
+        <div className="p-3 sm:p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
           <div className="text-[11px] font-bold uppercase text-stone-500">Себестоимость</div>
-          <div className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1">
+          <div className="text-base sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1 truncate">
             {totalCost.toLocaleString('ru-RU')} ₽
           </div>
-          <div className="text-[10px] text-stone-400 mt-0.5">из шаблона Excel</div>
+          <div className="text-[10px] text-stone-400 mt-0.5 truncate">из шаблона Excel</div>
         </div>
 
-        <div className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
+        <div className="p-3 sm:p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
           <div className="text-[11px] font-bold uppercase text-stone-500">Валовая маржа</div>
-          <div className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">
+          <div className="text-base sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 truncate">
             {totalMargin.toLocaleString('ru-RU')} ₽
           </div>
-          <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">
+          <div className="text-[10px] text-emerald-600 font-semibold mt-0.5 truncate">
             {totalRevenue > 0 ? `${((totalMargin / totalRevenue) * 100).toFixed(1)}% рентаб.` : '—'}
           </div>
         </div>
 
-        <div className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
+        <div className="p-3 sm:p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800">
           <div className="text-[11px] font-bold uppercase text-stone-500">Продано порций</div>
-          <div className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1">
+          <div className="text-base sm:text-xl font-extrabold text-stone-900 dark:text-stone-100 mt-1">
             {totalPortions}
           </div>
-          <div className="text-[10px] text-stone-400 mt-0.5">по 40 мл / сет</div>
+          <div className="text-[10px] text-stone-400 mt-0.5 truncate">по 40 мл / сет</div>
         </div>
       </div>
 

@@ -27,7 +27,11 @@
   scrollbar-width: none;
 }
 
-/* Безопасная зона для iPhone / PWA */
+/* Безопасная зона для iPhone / PWA с учетом челки и полосы Home Indicator */
+.pt-safe {
+  padding-top: max(12px, env(safe-area-inset-top, 0px));
+}
+
 .pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 8px);
+  padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 8px));
 }

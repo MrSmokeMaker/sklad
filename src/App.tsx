@@ -42,7 +42,7 @@ export function RootLayout({
   isMock: boolean;
 }) {
   return (
-    <div className={`min-h-screen pb-20 ${darkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen pb-[calc(76px+env(safe-area-inset-bottom,16px))] ${darkMode ? 'dark' : ''}`}>
       <Header
         venues={venues}
         activeVenueId={activeVenueId}

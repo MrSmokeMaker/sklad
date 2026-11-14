@@ -1,20 +1,18 @@
-// src/db/dataService.ts: Единый слой данных с поддержкой Supabase и офлайн/демо-режима
+// src/db/dataService.ts: Автономный локальный слой данных приложения (IndexedDB + localStorage)
 
-import { supabase, isMockConfigured } from './supabase';
 import {
   Venue, Profile, InventoryItem, Recipe, Infusion, InfusionSet,
   Batch, Transfer, Sale, NameMapping, OperationsLog, Invite, AIIntent, ShowcaseItem
 } from '../types';
 import { INITIAL_SHOWCASE_ITEMS } from './showcaseData';
-import { getStoredFirebaseConfig, saveFirebaseConfig, clearFirebaseConfig, initFirebase, FirebaseConfig } from './firebase';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { localDB } from './localDatabase';
 import * as mock from './mockData';
 
 class DataService {
-  private useMock: boolean = isMockConfigured;
+  private useMock: boolean = true;
   private currentUserId: string = 'usr-owner-01'; // Default demo user
 
-  // Локальное реактивное состояние (кэш в памяти с сохранением в localStorage)
+  // Локальное реактивное состояние (кэш в памяти с сохранением в IndexedDB и localStorage)
   private state = {
     venues: [...mock.INITIAL_VENUES],
     profiles: [...mock.INITIAL_PROFILES],
@@ -31,15 +29,11 @@ class DataService {
     showcase: [...INITIAL_SHOWCASE_ITEMS],
   };
 
-  private firebaseUnsub: (() => void) | null = null;
-  private isSyncingFromCloud: boolean = false;
-
   private lastAiRequestTimestamp: number = 0;
 
   constructor() {
     this.loadFromStorage();
   }
-
 
   // ---------- Резервное копирование и экспорт ----------
   public async exportBackup(): Promise<string> {
@@ -52,78 +46,11 @@ class DataService {
       if (parsed && typeof parsed === 'object') {
         this.state = { ...this.state, ...parsed };
         this.saveToStorage();
-        if (this.isFirebaseConnected()) {
-          await this.syncToFirebase();
-        }
         return true;
       }
       return false;
     } catch {
       return false;
-    }
-  }
-
-  // ---------- Firebase Cloud Sync ----------
-  public isFirebaseConnected(): boolean {
-    const cfg = getStoredFirebaseConfig();
-    return !!(cfg && cfg.apiKey && cfg.projectId);
-  }
-
-  public async connectFirebase(config: FirebaseConfig): Promise<boolean> {
-    try {
-      saveFirebaseConfig(config);
-      const { db } = initFirebase();
-      if (!db) return false;
-
-      // Первичная синхронизация в облако
-      await this.syncToFirebase();
-      this.subscribeToFirebase();
-      return true;
-    } catch (e) {
-      console.error('Firebase connect error:', e);
-      return false;
-    }
-  }
-
-  public disconnectFirebase() {
-    clearFirebaseConfig();
-    if (this.firebaseUnsub) {
-      this.firebaseUnsub();
-      this.firebaseUnsub = null;
-    }
-  }
-
-  private async syncToFirebase() {
-    if (this.isSyncingFromCloud) return;
-    const { db } = initFirebase();
-    if (!db) return;
-    try {
-      await setDoc(doc(db, 'sklad_data', 'shared_state'), {
-        ...this.state,
-        updated_at: new Date().toISOString()
-      });
-    } catch (err) {
-      console.warn('Sync to Firebase warning:', err);
-    }
-  }
-
-  private subscribeToFirebase() {
-    const { db } = initFirebase();
-    if (!db) return;
-    try {
-      this.firebaseUnsub = onSnapshot(doc(db, 'sklad_data', 'shared_state'), (snap) => {
-        if (snap.exists()) {
-          const cloudData = snap.data();
-          if (cloudData) {
-            this.isSyncingFromCloud = true;
-            this.state = { ...this.state, ...cloudData };
-            localStorage.setItem('sklad_state_v1', JSON.stringify(this.state));
-            this.isSyncingFromCloud = false;
-          }
-        }
-      });
-    } catch (err) {
-      console.warn('Firebase subscribe warning:', err);
     }
   }
 
@@ -140,23 +67,25 @@ class DataService {
     };
     this.state.showcase.unshift(newItem);
     this.saveToStorage();
-    if (this.isFirebaseConnected()) {
-      await this.syncToFirebase();
-    }
     return newItem;
   }
 
   private saveToStorage() {
     try {
       localStorage.setItem('sklad_state_v1', JSON.stringify(this.state));
-      if (this.isFirebaseConnected()) { this.syncToFirebase(); }
     } catch {
       // Игнорируем в SSR / тестах
     }
+    localDB.saveState(this.state).catch(() => {});
   }
 
-  private loadFromStorage() {
+  private async loadFromStorage() {
     try {
+      const fromIDB = await localDB.loadState();
+      if (fromIDB) {
+        this.state = { ...this.state, ...fromIDB };
+        return;
+      }
       const saved = localStorage.getItem('sklad_state_v1');
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -833,29 +762,6 @@ class DataService {
       }
     }
 
-    // 2. Попытка вызова Edge Function Supabase (если доступна)
-    try {
-      if (!this.useMock && supabase) {
-        const { data, error } = await supabase.functions.invoke('yandex-gpt', {
-          body: {
-            mode: 'intent',
-            message,
-            context: {
-              stock: stock.map(s => ({ name: s.name, quantity: s.quantity, unit: s.unit })),
-              venues: this.state.venues.map(v => ({ id: v.id, name: v.name })),
-              poorRatings
-            }
-          }
-        });
-
-        if (!error && data?.reply) {
-          return data;
-        }
-      }
-    } catch {
-      // Идём в локальный парсер намерений
-    }
-
     // Встроенный интеллектуальный локальный анализатор намерений (Local AI Fallback)
     return this.fallbackLocalAiIntent(message, stock);
   }
@@ -866,22 +772,6 @@ class DataService {
       await new Promise(r => setTimeout(r, 3000));
     }
     this.lastAiRequestTimestamp = Date.now();
-
-    try {
-      if (!this.useMock && supabase) {
-        const { data, error } = await supabase.functions.invoke('yandex-gpt', {
-          body: {
-            mode: 'monthly_report',
-            context: { salesSummary }
-          }
-        });
-        if (!error && data?.reply) {
-          return data.reply;
-        }
-      }
-    } catch {
-      // Fallback
-    }
 
     // Локальная генерация отчёта строго по цифрам
     const margin = salesSummary.totalRevenue - salesSummary.totalCost;

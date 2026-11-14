@@ -23,7 +23,7 @@ export function SegmentedControl<T extends string>({
   className = ''
 }: SegmentedControlProps<T>) {
   return (
-    <div className={`relative flex items-center bg-stone-200/70 dark:bg-stone-800/80 p-1 rounded-xl select-none ${className}`}>
+    <div className={`relative flex items-center overflow-x-auto no-scrollbar scroll-smooth touch-pan-x bg-stone-200/70 dark:bg-stone-800/80 p-1 rounded-xl select-none ${className}`}>
       {options.map((opt) => {
         const isSelected = opt.value === value;
         return (
@@ -31,7 +31,7 @@ export function SegmentedControl<T extends string>({
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
-            className={`relative flex-1 py-1.5 px-3 text-xs sm:text-sm font-semibold text-center transition-colors duration-200 z-10 flex items-center justify-center gap-1.5 whitespace-nowrap ${
+            className={`relative flex-1 shrink-0 sm:shrink min-w-fit py-1.5 px-2.5 sm:px-3 text-xs sm:text-sm font-semibold text-center transition-colors duration-200 z-10 flex items-center justify-center gap-1.5 whitespace-nowrap ${
               isSelected
                 ? 'text-brand-primary-dark dark:text-stone-100'
                 : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'

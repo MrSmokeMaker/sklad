@@ -159,7 +159,7 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
           />
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 touch-pan-x pr-2">
           {categories.map(c => (
             <button
               key={c.id}

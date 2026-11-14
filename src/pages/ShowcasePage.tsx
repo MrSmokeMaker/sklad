@@ -118,7 +118,7 @@ export const ShowcasePage: React.FC = () => {
           />
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 touch-pan-x pr-2">
           {categories.map(c => (
             <button
               key={c.id}
@@ -143,7 +143,7 @@ export const ShowcasePage: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: Math.min(0.25, idx * 0.04) }}
-            className="p-5 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/70 dark:border-stone-800 flex flex-col justify-between space-y-4 hover:border-brand-amber/70 transition-colors"
+            className="p-4 sm:p-5 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/70 dark:border-stone-800 flex flex-col justify-between space-y-4 hover:border-brand-amber/70 transition-colors"
           >
             <div>
               {/* Шапка карточки */}
@@ -162,18 +162,18 @@ export const ShowcasePage: React.FC = () => {
                   </div>
                 </div>
 
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 uppercase tracking-wider">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 uppercase tracking-wider shrink-0">
                   {item.category}
                 </span>
               </div>
 
               {/* Бейджи характеристик */}
-              <div className="flex items-center gap-2 my-3">
-                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-2 my-3">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 flex items-center gap-1 shrink-0">
                   <Percent size={13} className="text-brand-amber" />
                   Крепость: {item.abv}%
                 </span>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 flex items-center gap-1">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 flex items-center gap-1 shrink-0">
                   <Clock size={13} className="text-brand-primary" />
                   Выдержка: {item.aging_text}
                 </span>
@@ -184,20 +184,20 @@ export const ShowcasePage: React.FC = () => {
                 <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
                   Вкусовая матрица:
                 </div>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                  <div className="flex items-center justify-between">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-stone-600 dark:text-stone-400">Сладость:</span>
                     {renderDots(item.flavor_profile.sweetness)}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-stone-600 dark:text-stone-400">Кислинка:</span>
                     {renderDots(item.flavor_profile.acidity)}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-stone-600 dark:text-stone-400">Пряность / Острота:</span>
                     {renderDots(item.flavor_profile.spice)}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-stone-600 dark:text-stone-400">Плотность тела:</span>
                     {renderDots(item.flavor_profile.density)}
                   </div>

@@ -49,7 +49,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] overflow-y-auto rounded-t-sheet bg-white dark:bg-surface-dark-card shadow-sheet p-5 pb-8 sm:max-w-xl sm:mx-auto"
+            className="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] overflow-y-auto rounded-t-sheet bg-white dark:bg-surface-dark-card shadow-sheet p-5 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] sm:max-w-xl sm:mx-auto"
           >
             {/* Grab handle */}
             <div className="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full mx-auto mb-4" />

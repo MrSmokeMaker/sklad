@@ -173,7 +173,7 @@ export const InventoryPage: React.FC<InventoryPageProps> = ({
         </div>
 
         {typesList.length > 2 && (
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 touch-pan-x pr-2">
             {typesList.map(t => (
               <button
                 key={t}
