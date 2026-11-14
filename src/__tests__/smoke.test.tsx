@@ -6,6 +6,9 @@ import { render, screen } from '@testing-library/react';
 import { LogoMark } from '../components/branding/LogoMark';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { SegmentedControl } from '../components/common/SegmentedControl';
+import { BottomNav } from '../components/layout/BottomNav';
+import { Header } from '../components/layout/Header';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('UI Smoke Tests', () => {
   it('рендерит LogoMark во всех трех режимах без ошибок', () => {
@@ -17,6 +20,32 @@ describe('UI Smoke Tests', () => {
 
     const { container: pulseLogo } = render(<LogoMark mode="pulse-on-tap" size={48} />);
     expect(pulseLogo.querySelector('svg')).toBeDefined();
+  });
+
+  it('рендерит BottomNav ровно с 5 основными разделами', () => {
+    render(
+      <MemoryRouter>
+        <BottomNav />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Склад')).toBeInTheDocument();
+    expect(screen.getByText('Рецепты')).toBeInTheDocument();
+    expect(screen.getByText('Настойки')).toBeInTheDocument();
+    expect(screen.getByText('Перемещения')).toBeInTheDocument();
+    expect(screen.getByText('Аналитика')).toBeInTheDocument();
+    expect(screen.queryByText('Витрина')).toBeNull();
+    expect(screen.queryByText('AI Чат')).toBeNull();
+  });
+
+  it('рендерит Header с Витриной, ИИ Помощником, Темой и Профилем', () => {
+    render(
+      <MemoryRouter>
+        <Header darkMode={false} onToggleDarkMode={() => {}} />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Витрина')).toBeInTheDocument();
+    expect(screen.getByText('ИИ Помощник')).toBeInTheDocument();
+    expect(screen.getByText('Профиль')).toBeInTheDocument();
   });
 
   it('рендерит ProgressBar и корректно рассчитывает статусы остатков', () => {

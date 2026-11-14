@@ -27,7 +27,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#5A1010] via-[#8B1A1A] to-[#FAF7F2] p-6 text-center select-none cursor-pointer"
       >
         <div className="flex flex-col items-center max-w-sm">
-          <LogoMark mode="splash" size={160} className="mb-6 shadow-2xl rounded-full bg-surface-bg/10 p-2" />
+          <div className="mb-6 rounded-full bg-surface-bg/10 p-2.5 shadow-2xl flex items-center justify-center">
+            <LogoMark mode="splash" size={148} />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 25 }}

@@ -100,81 +100,85 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         </g>
 
         {/* Центральные солярные звёзды */}
-        <motion.g
-          transform="translate(256, 256)"
-          initial={
-            mode === 'splash' && !shouldReduceMotion
-              ? { rotate: -180, scale: 0.2, opacity: 0 }
-              : false
-          }
-          animate={
-            mode === 'ambient' && !shouldReduceMotion
-              ? { rotate: 360 }
-              : mode === 'splash' && !shouldReduceMotion
-              ? { rotate: 0, scale: 1, opacity: 1 }
-              : isTapped
-              ? { scale: [1, 1.08, 1] }
-              : { rotate: 0, scale: 1, opacity: 1 }
-          }
-          transition={
-            mode === 'ambient' && !shouldReduceMotion
-              ? { repeat: Infinity, duration: 80, ease: 'linear' }
-              : mode === 'splash'
-              ? { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
-              : { duration: 0.3 }
-          }
-        >
-          {/* Внешняя красная 8-конечная звезда */}
-          <path
-            d="M 0,-185 L 36,-65 L 185,0 L 65,36 L 0,185 L -36,65 L -185,0 L -65,-36 Z"
-            fill="#8B1A1A"
-            stroke="#5A1010"
-            strokeWidth="4"
-          />
-          <path
-            d="M -131,-131 L -25,-75 L 0,-185 L 25,-75 L 131,-131 L 75,-25 L 185,0 L 75,25 L 131,131 L 25,75 L 0,185 L -25,75 L -131,131 L -75,25 L -185,0 L -75,-25 Z"
-            fill="#8B1A1A"
-            opacity="0.95"
-          />
+        <g transform="translate(256, 256)">
+          <motion.g
+            initial={
+              mode === 'splash' && !shouldReduceMotion
+                ? { rotate: -180, scale: 0.2, opacity: 0 }
+                : false
+            }
+            animate={
+              mode === 'ambient' && !shouldReduceMotion
+                ? { rotate: 360 }
+                : mode === 'splash' && !shouldReduceMotion
+                ? { rotate: 0, scale: 1, opacity: 1 }
+                : isTapped
+                ? { scale: [1, 1.08, 1] }
+                : { rotate: 0, scale: 1, opacity: 1 }
+            }
+            transition={
+              mode === 'ambient' && !shouldReduceMotion
+                ? { repeat: Infinity, duration: 80, ease: 'linear' }
+                : mode === 'splash'
+                ? { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                : { duration: 0.3 }
+            }
+            style={{ transformOrigin: '0px 0px' }}
+          >
+            {/* Внешняя красная 8-конечная звезда */}
+            <path
+              d="M 0,-185 L 36,-65 L 185,0 L 65,36 L 0,185 L -36,65 L -185,0 L -65,-36 Z"
+              fill="#8B1A1A"
+              stroke="#5A1010"
+              strokeWidth="4"
+            />
+            <path
+              d="M -131,-131 L -25,-75 L 0,-185 L 25,-75 L 131,-131 L 75,-25 L 185,0 L 75,25 L 131,131 L 25,75 L 0,185 L -25,75 L -131,131 L -75,25 L -185,0 L -75,-25 Z"
+              fill="#8B1A1A"
+              opacity="0.95"
+            />
 
-          {/* Внутренняя янтарная звезда со смещением 22.5° */}
-          <g transform="rotate(22.5)">
-            <path
-              d="M 0,-138 L 26,-48 L 138,0 L 48,26 L 0,138 L -26,48 L -138,0 L -48,-26 Z"
-              fill="#E8A33D"
-              stroke="#8B1A1A"
-              strokeWidth="2"
-            />
-            <path
-              d="M -98,-98 L -18,-56 L 0,-138 L 18,-56 L 98,-98 L 56,-18 L 138,0 L 56,18 L 98,98 L 18,56 L 0,138 L -18,56 L -98,98 L -56,18 L -138,0 L -56,-18 Z"
-              fill="#E8A33D"
-              opacity="0.9"
-            />
-          </g>
-        </motion.g>
+            {/* Внутренняя янтарная звезда со смещением 22.5° */}
+            <g transform="rotate(22.5)">
+              <path
+                d="M 0,-138 L 26,-48 L 138,0 L 48,26 L 0,138 L -26,48 L -138,0 L -48,-26 Z"
+                fill="#E8A33D"
+                stroke="#8B1A1A"
+                strokeWidth="2"
+              />
+              <path
+                d="M -98,-98 L -18,-56 L 0,-138 L 18,-56 L 98,-98 L 56,-18 L 138,0 L 56,18 L 98,98 L 18,56 L 0,138 L -18,56 L -98,98 L -56,18 L -138,0 L -56,-18 Z"
+                fill="#E8A33D"
+                opacity="0.9"
+              />
+            </g>
+          </motion.g>
+        </g>
 
         {/* Кремовое пульсирующее ядро (неподвижно в центре) */}
-        <motion.g
-          transform="translate(256, 256)"
-          animate={
-            mode === 'ambient' && !shouldReduceMotion
-              ? { scale: [1, 1.08, 1] }
-              : isTapped
-              ? { scale: [1, 1.15, 1] }
-              : {}
-          }
-          transition={
-            mode === 'ambient' && !shouldReduceMotion
-              ? { repeat: Infinity, duration: 2.6, ease: 'easeInOut' }
-              : { duration: 0.3 }
-          }
-        >
-          <circle cx="0" cy="0" r="48" fill="url(#logoCoreGrad)" stroke="#E8A33D" strokeWidth="5" />
-          <circle cx="0" cy="0" r="32" fill="#FAF7F2" />
-          {/* Тёмно-красная точка в центре */}
-          <circle cx="0" cy="0" r="14" fill="#8B1A1A" />
-          <circle cx="0" cy="0" r="5" fill="#E8A33D" />
-        </motion.g>
+        <g transform="translate(256, 256)">
+          <motion.g
+            animate={
+              mode === 'ambient' && !shouldReduceMotion
+                ? { scale: [1, 1.08, 1] }
+                : isTapped
+                ? { scale: [1, 1.15, 1] }
+                : {}
+            }
+            transition={
+              mode === 'ambient' && !shouldReduceMotion
+                ? { repeat: Infinity, duration: 2.6, ease: 'easeInOut' }
+                : { duration: 0.3 }
+            }
+            style={{ transformOrigin: '0px 0px' }}
+          >
+            <circle cx="0" cy="0" r="48" fill="url(#logoCoreGrad)" stroke="#E8A33D" strokeWidth="5" />
+            <circle cx="0" cy="0" r="32" fill="#FAF7F2" />
+            {/* Тёмно-красная точка в центре */}
+            <circle cx="0" cy="0" r="14" fill="#8B1A1A" />
+            <circle cx="0" cy="0" r="5" fill="#E8A33D" />
+          </motion.g>
+        </g>
       </svg>
     </div>
   );

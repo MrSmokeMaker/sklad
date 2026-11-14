@@ -6,7 +6,6 @@ import {
   RouterProvider,
   Outlet,
   Navigate,
-  useNavigate
 } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { BottomNav } from './components/layout/BottomNav';
@@ -18,7 +17,7 @@ import { InventoryPage } from './pages/InventoryPage';
 import { RecipesPage } from './pages/RecipesPage';
 import { BatchesPage } from './pages/BatchesPage';
 import { TransfersPage } from './pages/TransfersPage';
-import { TeamPage } from './pages/TeamPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { AssistantPage } from './pages/AssistantPage';
 import { StatisticsPage } from './pages/StatisticsPage';
 import { ShowcasePage } from './pages/ShowcasePage';
@@ -178,15 +177,21 @@ export function App() {
           )
         },
         {
-          path: 'team',
-          element: currentProfile.role === 'owner' ? (
-            <TeamPage
+          path: 'profile',
+          element: (
+            <ProfilePage
               venues={venues}
+              activeVenueId={activeVenueId}
+              onVenueChange={handleVenueChange}
               currentProfile={currentProfile}
+              darkMode={darkMode}
+              onToggleDarkMode={toggleDarkMode}
             />
-          ) : (
-            <Navigate to="/" replace />
           )
+        },
+        {
+          path: 'team',
+          element: <Navigate to="/profile" replace />
         },
         {
           path: 'assistant',

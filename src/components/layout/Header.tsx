@@ -1,189 +1,109 @@
-// src/components/layout/Header.tsx: Шапка приложения с солярным логотипом и градиентом
+// src/components/layout/Header.tsx: Шапка приложения с поправленным логотипом и верхними кнопками навигации
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { LogoMark } from '../branding/LogoMark';
-import { Moon, Sun, Sparkles, Building2, Download, Upload, Database, RotateCcw } from 'lucide-react';
+import { Moon, Sun, Sparkles, Bot, User } from 'lucide-react';
 import { Venue, Profile } from '../../types';
-import { useNavigate } from 'react-router-dom';
-import { dataService } from '../../db/dataService';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
-  venues: Venue[];
-  activeVenueId: string;
-  onVenueChange: (venueId: string) => void;
-  currentProfile: Profile;
+  venues?: Venue[];
+  activeVenueId?: string;
+  onVenueChange?: (venueId: string) => void;
+  currentProfile?: Profile;
   darkMode: boolean;
   onToggleDarkMode: () => void;
-  isMock: boolean;
+  isMock?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  venues,
-  activeVenueId,
-  onVenueChange,
-  currentProfile,
   darkMode,
   onToggleDarkMode,
 }) => {
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const isOwner = currentProfile.role === 'owner';
+  const location = useLocation();
 
-  const handleDownloadBackup = async () => {
-    const jsonStr = await dataService.exportBackup();
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Sklad_Nastoyki_Backup_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleRestoreBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const content = event.target?.result as string;
-      const success = await dataService.importBackup(content);
-      if (success) {
-        alert('База данных успешно восстановлена из файла резервной копии!');
-        window.location.reload();
-      } else {
-        alert('Не удалось прочитать файл резервной копии. Проверьте формат JSON.');
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleResetCatalog = () => {
-    if (window.confirm('Обновить базу данных и загрузить полный актуальный каталог из 26 авторских рецептур настоек?')) {
-      dataService.resetMockData();
-      window.location.reload();
-    }
-  };
+  const isShowcaseActive = location.pathname === '/showcase';
+  const isAssistantActive = location.pathname === '/assistant';
+  const isProfileActive = location.pathname === '/profile';
 
   return (
-    <header className="relative overflow-hidden bg-[#5A1010] border-b border-red-950/60 text-white shadow-md pt-safe">
-      <div className="max-w-4xl mx-auto px-3.5 sm:px-4 py-2.5 sm:py-3.5 flex flex-col gap-2 sm:gap-2.5">
-        <div className="flex items-center justify-between gap-2">
-          {/* Логотип + заголовок сети */}
-          <div className="flex items-center gap-2.5 min-w-0">
-            <LogoMark
-              mode="ambient"
-              size={36}
-              onTap={() => navigate('/assistant')}
-              className="cursor-pointer shrink-0"
-            />
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">
-                  Настойки
-                </h1>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-brand-amber text-brand-primary-dark uppercase shrink-0">
-                  {currentProfile.role}
-                </span>
-                <span className="hidden xs:inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-200 border border-emerald-400/30 shrink-0">
-                  Local DB
-                </span>
-              </div>
-              <p className="text-[11px] sm:text-xs text-amber-100/90 font-medium truncate">
-                Мордовское подворье
-              </p>
-            </div>
+    <header className="sticky top-0 z-40 bg-[#5A1010] border-b border-red-950/60 text-white shadow-md pt-safe">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2">
+        {/* Поправленный солярный логотип сети (центрированная звезда) */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2.5 min-w-0 text-left hover:opacity-95 transition-opacity focus:outline-none"
+          title="На главную (Склад)"
+        >
+          <LogoMark
+            mode="ambient"
+            size={36}
+            className="shrink-0"
+          />
+          <div className="min-w-0">
+            <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">
+              Настойки
+            </h1>
+            <p className="text-[10px] sm:text-[11px] text-amber-100/90 font-medium truncate leading-tight">
+              Мордовское подворье
+            </p>
           </div>
+        </button>
 
-          {/* Правая панель кнопок */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-            {/* Статус локальной БД */}
-            <div
-              className="p-1.5 sm:px-2 sm:py-1.5 rounded-xl bg-white/10 text-emerald-200 text-xs font-semibold backdrop-blur-sm flex items-center gap-1"
-              title="Локальная база данных (IndexedDB + localStorage)"
-            >
-              <Database size={15} className="text-emerald-300 shrink-0" />
-              <span className="hidden md:inline">Локальная БД</span>
-            </div>
+        {/* Наверху на всех страницах только: Витрина, ИИ помощник, Светлая/темная тема, Профиль */}
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          {/* Витрина */}
+          <button
+            onClick={() => navigate('/showcase')}
+            className={`px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              isShowcaseActive
+                ? 'bg-amber-400 text-stone-900 shadow-sm font-bold scale-102'
+                : 'bg-white/10 hover:bg-white/20 text-amber-100 backdrop-blur-sm'
+            }`}
+            title="Гостевая витрина настоек"
+          >
+            <Sparkles size={16} className={isShowcaseActive ? 'text-stone-900' : 'text-amber-300'} />
+            <span className="hidden xs:inline">Витрина</span>
+          </button>
 
-            <button
-              onClick={handleDownloadBackup}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-              title="Скачать резервную копию базы (JSON)"
-            >
-              <Download size={15} />
-            </button>
+          {/* ИИ помощник */}
+          <button
+            onClick={() => navigate('/assistant')}
+            className={`px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              isAssistantActive
+                ? 'bg-amber-400 text-stone-900 shadow-sm font-bold scale-102'
+                : 'bg-white/10 hover:bg-white/20 text-amber-100 backdrop-blur-sm'
+            }`}
+            title="AI Бар-помощник"
+          >
+            <Bot size={16} className={isAssistantActive ? 'text-stone-900' : 'text-amber-300'} />
+            <span className="hidden xs:inline">ИИ Помощник</span>
+          </button>
 
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-              title="Восстановить базу из файла JSON"
-            >
-              <Upload size={15} />
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".json"
-                onChange={handleRestoreBackup}
-                className="hidden"
-              />
-            </button>
+          {/* Светлая / тёмная тема */}
+          <button
+            onClick={onToggleDarkMode}
+            className="p-2 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+            title={darkMode ? 'Светлая тема' : 'Тёмная тема'}
+            aria-label="Переключить тему оформления"
+          >
+            {darkMode ? <Sun size={17} className="text-amber-300" /> : <Moon size={17} />}
+          </button>
 
-            <button
-              onClick={handleResetCatalog}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-              title="Обновить каталог и применить 26 авторских рецептов"
-            >
-              <RotateCcw size={15} />
-            </button>
-
-            <button
-              onClick={() => navigate('/assistant')}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 transition-colors backdrop-blur-sm flex items-center gap-1 text-xs font-semibold"
-              title="AI Бар-помощник"
-            >
-              <Sparkles size={15} className="text-brand-amber animate-pulse" />
-              <span className="hidden sm:inline">Ассистент</span>
-            </button>
-
-            <button
-              onClick={onToggleDarkMode}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-              title={darkMode ? 'Светлая тема' : 'Тёмная тема'}
-            >
-              {darkMode ? <Sun size={15} className="text-amber-300" /> : <Moon size={15} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Селектор заведения */}
-        <div className="flex items-center gap-2 pt-1 border-t border-white/10">
-          <Building2 size={14} className="text-amber-200 shrink-0" />
-          {isOwner ? (
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-0.5 w-full touch-pan-x pr-2">
-              {venues.map((v) => {
-                const isActive = v.id === activeVenueId;
-                return (
-                  <button
-                    key={v.id}
-                    onClick={() => onVenueChange(v.id)}
-                    className={`text-xs px-2.5 py-1 rounded-lg font-semibold shrink-0 transition-all ${
-                      isActive
-                        ? 'bg-white text-brand-primary-dark shadow-sm scale-102'
-                        : 'bg-black/20 text-white/90 hover:bg-black/30'
-                    }`}
-                  >
-                    {v.name}
-                    {v.kind === 'production' && ' (База)'}
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <span className="text-xs font-semibold text-white truncate">
-              Заведение: {venues.find(v => v.id === activeVenueId)?.name || 'Не указано'}
-            </span>
-          )}
+          {/* Профиль */}
+          <button
+            onClick={() => navigate('/profile')}
+            className={`p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              isProfileActive
+                ? 'bg-amber-400 text-stone-900 shadow-sm font-bold scale-102'
+                : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+            }`}
+            title="Профиль и команда"
+          >
+            <User size={17} className={isProfileActive ? 'text-stone-900' : 'text-white'} />
+            <span className="hidden sm:inline">Профиль</span>
+          </button>
         </div>
       </div>
     </header>

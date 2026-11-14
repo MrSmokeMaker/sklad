@@ -9,6 +9,18 @@ export default defineConfig(({ mode }) => {
 
   return {
     base,
+    // Vite manualChunks for heavy libs
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            xlsx: ['xlsx'],
+            recharts: ['recharts'],
+            jspdf: ['jspdf']
+          }
+        }
+      }
+    },
     plugins: [
       react(),
       VitePWA({
