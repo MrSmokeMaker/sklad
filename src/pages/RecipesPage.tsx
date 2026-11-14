@@ -64,8 +64,11 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
   const categories: Array<{ id: string; label: string }> = [
     { id: 'all', label: 'Все' },
     { id: 'ягодная', label: 'Ягодные' },
+    { id: 'цитрусовая', label: 'Цитрусовые' },
     { id: 'фруктовая', label: 'Фруктовые' },
     { id: 'пряная', label: 'Пряные' },
+    { id: 'гастрономическая', label: 'Гастрономические' },
+    { id: 'десертная', label: 'Десертные' },
     { id: 'наливка', label: 'Наливки' },
     { id: 'другое', label: 'Другие' },
   ];
@@ -84,7 +87,12 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
 
   // Расчет расхода для активного рецепта
   const reqs = activeRecipe
-    ? calculateBatchRequirements(activeRecipe.ingredients, calcVolumeLiters, stockMap)
+    ? calculateBatchRequirements(
+        activeRecipe.ingredients,
+        calcVolumeLiters,
+        stockMap,
+        (activeRecipe.base_volume_мл || 1000) / 1000
+      )
     : [];
 
   const handleAddIngredientRow = () => {
@@ -128,7 +136,7 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
             Технологические карты (Рецепты)
           </h2>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-            Все рецептуры рассчитаны на 1 литр базы с авто-масштабированием
+            Технологические карты на базовый объём с авто-масштабированием на любой литраж
           </p>
         </div>
 
@@ -179,16 +187,16 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
       {/* Список рецептов */}
       <div className="grid sm:grid-cols-2 gap-3.5">
         {filteredRecipes.map((r) => {
-          // Проверяем, хватает ли ингредиентов хотя бы на 1 л
-          const reqs1L = calculateBatchRequirements(r.ingredients, 1, stockMap);
-          const hasAllIngredients = !reqs1L.some(i => i.willBe < 0);
+          const baseL = (r.base_volume_мл || 1000) / 1000;
+          const reqsBase = calculateBatchRequirements(r.ingredients, baseL, stockMap, baseL);
+          const hasAllIngredients = !reqsBase.some(i => i.willBe < 0);
 
           return (
             <div
               key={r.id}
               onClick={() => {
                 setActiveRecipe(r);
-                setCalcVolumeLiters(3);
+                setCalcVolumeLiters(baseL);
               }}
               className="p-4 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/60 dark:border-stone-800 cursor-pointer hover:border-brand-amber/80 transition-all flex flex-col justify-between"
             >
@@ -218,7 +226,7 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
                   </div>
                   <div className="flex items-center gap-1">
                     <Droplets size={13} className="text-brand-primary" />
-                    <span>Выход: <strong>{r.yield_мл} мл/л</strong></span>
+                    <span>Выход: <strong>{r.yield_мл} мл ({baseL} л)</strong></span>
                   </div>
                 </div>
               </div>
@@ -274,7 +282,7 @@ export const RecipesPage: React.FC<RecipesPageProps> = ({
 
               <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">
                 <span>0.5 л</span>
-                <span>Расчетный выход: ~{Math.round(calcVolumeLiters * activeRecipe.yield_мл)} мл</span>
+                <span>Расчетный выход: ~{Math.round((calcVolumeLiters / ((activeRecipe.base_volume_мл || 1000) / 1000)) * activeRecipe.yield_мл)} мл</span>
                 <span>25 л</span>
               </div>
             </div>

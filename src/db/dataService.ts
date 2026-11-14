@@ -72,7 +72,7 @@ class DataService {
 
   private saveToStorage() {
     try {
-      localStorage.setItem('sklad_state_v1', JSON.stringify(this.state));
+      localStorage.setItem('sklad_state_v2', JSON.stringify(this.state));
     } catch {
       // Игнорируем в SSR / тестах
     }
@@ -86,7 +86,7 @@ class DataService {
         this.state = { ...this.state, ...fromIDB };
         return;
       }
-      const saved = localStorage.getItem('sklad_state_v1');
+      const saved = localStorage.getItem('sklad_state_v2');
       if (saved) {
         const parsed = JSON.parse(saved);
         this.state = { ...this.state, ...parsed };
@@ -376,9 +376,12 @@ class DataService {
     const warnings: string[] = [];
     const stockDeductions: Array<{ itemId: string; name: string; deducted: number; oldQty: number; newQty: number }> = [];
 
-    // Списание сырья со склада заведения (база рецепта — 1 л)
+    // Списание сырья со склада заведения с учетом базового объёма техкарты
+    const baseLiters = (recipe.base_volume_мл || 1000) / 1000;
+    const factor = targetVolumeLiters / baseLiters;
+
     for (const ing of recipe.ingredients) {
-      const required = ing.qty * targetVolumeLiters;
+      const required = ing.qty * factor;
       let stockItem = this.state.inventory.find(
         i => i.venue_id === venueId && i.name.toLowerCase() === ing.name.toLowerCase()
       );
@@ -414,7 +417,7 @@ class DataService {
     const readyDate = new Date();
     readyDate.setDate(readyDate.getDate() + recipe.days);
 
-    const calculatedYieldMl = Math.round(targetVolumeLiters * (recipe.yield_мл || 900));
+    const calculatedYieldMl = Math.round(factor * (recipe.yield_мл || 1400));
 
     const newBatch: Batch = {
       id: 'bat-' + Date.now(),

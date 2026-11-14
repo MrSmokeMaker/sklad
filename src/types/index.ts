@@ -4,7 +4,7 @@ export type VenueKind = 'production' | 'venue';
 export type UserRole = 'owner' | 'staff' | 'viewer';
 export type BatchStatus = 'настаивается' | 'готово' | 'разлито' | 'архив';
 export type UnitType = 'г' | 'мл' | 'шт' | 'л' | 'кг';
-export type RecipeCategory = 'ягодная' | 'фруктовая' | 'пряная' | 'наливка' | 'другое';
+export type RecipeCategory = 'ягодная' | 'фруктовая' | 'пряная' | 'наливка' | 'гастрономическая' | 'десертная' | 'цитрусовая' | 'другое';
 
 export interface Venue {
   id: string;
@@ -159,7 +159,7 @@ export interface ShowcaseItem {
   emoji: string;
   abv: number; // 28-32%
   aging_text: string; // '14 дней', '21 день', 'более месяца'
-  category: 'ягодная' | 'цитрусовая' | 'пряная' | 'гастрономическая' | 'десертная';
+  category: 'ягодная' | 'цитрусовая' | 'пряная' | 'гастрономическая' | 'десертная' | 'фруктовая' | 'другое';
   flavor_profile: {
     sweetness: number; // 1-5
     acidity: number;   // 1-5

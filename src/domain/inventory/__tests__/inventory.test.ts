@@ -40,7 +40,9 @@ describe('Складская логика: FIFO, перемещения и от�
     );
 
     expect(res.batch).toBeDefined();
-    expect(res.batch.volume_мл).toBe(15 * 920);
+    const recipe = (await dataService.getRecipes()).find(r => r.id === 'rcp-01')!;
+    const expectedYield = Math.round((15 / (recipe.base_volume_мл / 1000)) * recipe.yield_мл);
+    expect(res.batch.volume_мл).toBe(expectedYield);
     // Проверка наличия партии
     const batches = await dataService.getBatches('production-podvorie');
     expect(batches.some(b => b.id === res.batch.id)).toBe(true);

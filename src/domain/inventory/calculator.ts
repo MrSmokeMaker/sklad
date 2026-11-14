@@ -17,10 +17,12 @@ export interface BatchRequirementItem {
 export function calculateBatchRequirements(
   ingredients: RecipeIngredient[],
   targetVolumeLiters: number,
-  currentStock: Record<string, number>
+  currentStock: Record<string, number>,
+  baseVolumeLiters: number = 1.0
 ): BatchRequirementItem[] {
+  const factor = targetVolumeLiters / (baseVolumeLiters || 1.0);
   return ingredients.map((ing) => {
-    let required = ing.qty * targetVolumeLiters;
+    let required = ing.qty * factor;
     const available = currentStock[ing.name.toLowerCase()] ?? 0;
 
     // Округление до 2 знаков
