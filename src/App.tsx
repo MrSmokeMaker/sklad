@@ -42,7 +42,7 @@ export function RootLayout({
   isMock: boolean;
 }) {
   return (
-    <div className={`min-h-screen pb-[calc(76px+env(safe-area-inset-bottom,16px))] ${darkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen pb-[calc(76px+env(safe-area-inset-bottom,16px))] overflow-x-hidden w-full ${darkMode ? 'dark' : ''}`}>
       <Header
         venues={venues}
         activeVenueId={activeVenueId}
@@ -52,7 +52,7 @@ export function RootLayout({
         onToggleDarkMode={onToggleDarkMode}
         isMock={isMock}
       />
-      <main className="max-w-4xl mx-auto">
+      <main className="max-w-4xl mx-auto w-full min-w-0 px-0 overflow-x-hidden">
         <Outlet />
       </main>
       <BottomNav userRole={currentProfile.role} />

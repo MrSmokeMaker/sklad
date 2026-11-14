@@ -59,10 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="relative overflow-hidden bg-gradient-to-r from-brand-primary-dark via-brand-primary to-brand-amber text-white shadow-md pt-safe">
-      {/* Мягкий декоративный радиальный свет */}
-      <div className="absolute -top-12 -right-12 w-48 h-48 bg-brand-amber/20 rounded-full blur-3xl pointer-events-none" />
-
+    <header className="relative overflow-hidden bg-[#5A1010] border-b border-red-950/60 text-white shadow-md pt-safe">
       <div className="max-w-4xl mx-auto px-3.5 sm:px-4 py-2.5 sm:py-3.5 flex flex-col gap-2 sm:gap-2.5">
         <div className="flex items-center justify-between gap-2">
           {/* Логотип + заголовок сети */}

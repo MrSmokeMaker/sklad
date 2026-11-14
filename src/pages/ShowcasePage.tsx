@@ -73,7 +73,7 @@ export const ShowcasePage: React.FC = () => {
 
   const renderDots = (value: number) => {
     return (
-      <span className="font-mono text-xs tracking-widest text-brand-primary dark:text-brand-amber">
+      <span className="font-mono text-xs tracking-wider text-brand-primary dark:text-brand-amber shrink-0 select-none">
         {'●'.repeat(value)}
         <span className="text-stone-300 dark:text-stone-700">{'○'.repeat(5 - value)}</span>
       </span>
@@ -81,13 +81,13 @@ export const ShowcasePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div className="w-full max-w-4xl mx-auto px-3.5 sm:px-4 py-5 sm:py-6 space-y-5 overflow-hidden">
       {/* Заголовок витрины и кнопка ИИ */}
       <div className="text-center space-y-3 max-w-xl mx-auto">
         <div className="inline-flex items-center justify-center p-2 rounded-full bg-brand-primary/10 mb-1">
           <LogoMark mode="ambient" size={48} />
         </div>
-        <h2 className="text-2xl font-extrabold text-stone-900 dark:text-stone-100 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-stone-100 tracking-tight">
           Витрина авторских настоек
         </h2>
         <p className="text-xs text-stone-500 dark:text-stone-400">
@@ -106,7 +106,7 @@ export const ShowcasePage: React.FC = () => {
       </div>
 
       {/* Поиск и категории */}
-      <div className="space-y-3">
+      <div className="space-y-3 w-full min-w-0">
         <div className="relative">
           <Search size={16} className="absolute left-3.5 top-3 text-stone-400" />
           <input
@@ -118,7 +118,7 @@ export const ShowcasePage: React.FC = () => {
           />
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 touch-pan-x pr-2">
+        <div className="w-full min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 touch-pan-x pr-2">
           {categories.map(c => (
             <button
               key={c.id}
@@ -136,14 +136,14 @@ export const ShowcasePage: React.FC = () => {
       </div>
 
       {/* Сетка карточек витрины */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4 w-full min-w-0">
         {filteredItems.map((item, idx) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: Math.min(0.25, idx * 0.04) }}
-            className="p-4 sm:p-5 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/70 dark:border-stone-800 flex flex-col justify-between space-y-4 hover:border-brand-amber/70 transition-colors"
+            className="p-4 sm:p-5 bg-white dark:bg-surface-dark-card rounded-2xl shadow-card border border-stone-200/70 dark:border-stone-800 flex flex-col justify-between space-y-4 hover:border-brand-amber/70 transition-colors w-full min-w-0 max-w-full overflow-hidden"
           >
             <div>
               {/* Шапка карточки */}
